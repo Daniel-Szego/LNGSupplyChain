@@ -1,12 +1,12 @@
 /**
- * Transaction file for green supply chain
+ * Transaction file for LNG production chain
  */
 
-const namespace = "org.supplychain.green.model";
+const namespace = "org.supplychain.LNG.model";
 
 /**
  *
- * @param {org.supplychain.green.model.InitTestData} param - model instance
+ * @param {org.supplychain.LNG.model.InitTestData} param - model instance
  * @transaction
  */
 async function InitTestDataFunction(param) {  
@@ -133,7 +133,7 @@ async function InitTestDataFunction(param) {
 
 /**
  *
- * @param {org.supplychain.green.model.ClearData} param - model instance
+ * @param {org.supplychain.LNG.model.ClearData} param - model instance
  * @transaction
  */
 async function ClearDataFunction(param) {  
@@ -166,10 +166,10 @@ async function ClearDataFunction(param) {
 
 /**
  *
- * @param {org.supplychain.green.model.Transfer} param - model instance
+ * @param {org.supplychain.LNG.model.ChangeState} param - model instance
  * @transaction
  */
-async function TransferFunction(param) {  
+async function ChangeStateFunction(param) {  
 	let assetToTransfer = param.assetToTransfer;
     let fromCompany = param.fromCompany;
     let toCompany = param.toCompany;
@@ -206,10 +206,10 @@ async function TransferFunction(param) {
 
 /**
  *
- * @param {org.supplychain.green.model.Produce} param - model instance
+ * @param {org.supplychain.LNG.model.Create} param - model instance
  * @transaction
  */
-async function ProduceFunction(param) {  
+async function CreateFunction(param) {  
 	let manCompany = param.manufacturerCompany;
     let factory = await getFactory();
   
@@ -243,10 +243,10 @@ async function ProduceFunction(param) {
 
 /**
  *
- * @param {org.supplychain.green.model.Sell} param - model instance
+ * @param {org.supplychain.LNG.model.ToPipieline} param - model instance
  * @transaction
  */
-async function SellFunction(param) {  
+async function ToPipielineFunction(param) {  
 	let assetToTransfer = param.assetToSell;
     let factory = await getFactory();
  	
