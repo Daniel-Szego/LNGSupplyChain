@@ -140,28 +140,24 @@ async function ClearDataFunction(param) {
     console.log('clearing test data');
 
     // deleting assets
-    const cellPhoneRegistry = await getAssetRegistry(namespace + '.CellPhone'); 
-    let cellPhones = await cellPhoneRegistry.getAll();
-    await cellPhoneRegistry.removeAll(cellPhones);
+    const liquidRegistry = await getAssetRegistry(namespace + '.LNG'); 
+    let liqquidAssets = await liquidRegistry.getAll();
+    await liquidRegistry.removeAll(liqquidAssets);
   
   	// deleting participants
-    const manCompRegistry = await getParticipantRegistry(namespace + '.ManufacturerCompany');
-    let manCompanies = await manCompRegistry.getAll();
-    await manCompRegistry.removeAll(manCompanies);
+    const prodStateRegistry = await getParticipantRegistry(namespace + '.ProductionState');
+    let prodStates = await prodStateRegistry.getAll();
+    await prodStateRegistry.removeAll(prodStates);
     
-    const salesCompRegistry = await getParticipantRegistry(namespace + '.SalesCompany'); 
-    let salesCompanies = await salesCompRegistry.getAll();
-    await salesCompRegistry.removeAll(salesCompanies);
+    const gasFieldRegistry = await getParticipantRegistry(namespace + '.GasFieldState'); 
+    let gasFieldState = await gasFieldRegistry.getAll();
+    await gasFieldRegistry.removeAll(gasFieldState);
   
-    const relayCompRegistry = await getParticipantRegistry(namespace + '.RelayCompany'); 
-    let relayCompanies = await relayCompRegistry.getAll();
-    await relayCompRegistry.removeAll(relayCompanies);
+    const lNGToPipelineStateRegistry = await getParticipantRegistry(namespace + '.LNGToPipelineState'); 
+    let lNGToPipelineStates = await lNGToPipelineStateRegistry.getAll();
+    await lNGToPipelineStateRegistry.removeAll(lNGToPipelineStates);
 
-    const trCompRegistry = await getParticipantRegistry(namespace + '.TransportationCompany'); 
-    let trCompanies = await trCompRegistry.getAll();
-    await trCompRegistry.removeAll(trCompanies);
-  
-    console.log('clearing all data finished');  
+  console.log('clearing all data finished');  
 }
 
 /**
