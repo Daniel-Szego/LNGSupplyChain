@@ -13,26 +13,26 @@
  */
 
 /**
- * Experiental implementation of a green supply chain.
+ * Experiental implementation of a production chain for LNG.
  */
 
-namespace org.supplychain.green.model
+namespace org.supplychain.LNG.model
 
 /**
  * ASSETS
  */
 
 enum AssetStatus {
-  o CREATED 
-  o ON_THE_ROAD
-  o SOLD
+  o CREATED
+  o IN_PROCESS
+  o READY
 }
 
 abstract asset GHGcarrierAsset identified by assetId {
   o String assetId
   o AssetStatus assetStatus
   o Double aggregatedGHG
-  --> GHGproducerCompany atCompany
+  --> GHGProductionState atState
 }
 
 abstract asset PhisicalAsset extends GHGcarrierAsset {
@@ -43,48 +43,40 @@ abstract asset LiquidAsset extends GHGcarrierAsset {
   o Double amount
 }
 
-enum CellPhoneType {
-  o LENOVO
-  o ZTE
-  o XIAOMI
-}
-
-asset CellPhone extends PhisicalAsset {
-  o CellPhoneType cellPhoneType
+asset LNG extends LiquidAsset {
 }
 
 /**
  * PARTICIPANTS
  */
 
-concept CompanyAddress {
+concept Address {
   o String country
   o String city optional
   o String street optional
   o Integer hauseNr optional
 }
 
-abstract participant GHGproducerCompany identified by participantId {
-  o String participantId
-  o String companyName
-  o CompanyAddress companyAddress
+abstract participant GHGProductionState identified by stateId {
+  o String stateId
+  o String stateName
+  o Address address optional
   o Double GHG 
 }
 
-participant ManufacturerCompany extends GHGproducerCompany {
+// any kind of a state
+participant ProductionState extends GHGProductionState {
   
 }
 
-participant SalesCompany extends GHGproducerCompany {
+// start state
+participant GasFieldState extends GHGProductionState {
   
 }
 
-participant RelayCompany extends GHGproducerCompany {
+// end state
+participant LNGToPipelineState extends GHGProductionState {
   
-}
-
-participant TransportationCompany extends GHGproducerCompany {
-  --> GHGproducerCompany[] transportFrom
 }
 
 /**
@@ -97,19 +89,19 @@ transaction InitTestData {
 transaction ClearData {
 }
 
-transaction Transfer {
+transaction ChangeState {
   --> GHGcarrierAsset assetToTransfer
-  --> GHGproducerCompany fromCompany
-  --> GHGproducerCompany toCompany
+  --> GHGProductionState fromState
+  --> GHGProductionState toState
 }
 
-transaction Produce {
-  --> ManufacturerCompany manufacturerCompany
+transaction Create {
+  --> GasFieldState gasFieldState
 }
 
-transaction Sell {
-  --> GHGcarrierAsset assetToSell  
-  --> SalesCompany salesCompany
+transaction ToPipieline {
+  --> GHGcarrierAsset assetToPipeline  
+  --> LNGToPipelineState pipeLineState
 }
 
 /**
@@ -121,12 +113,12 @@ event AssetCreated {
   o Double creationGHG
 }
 
-event AssetTransferred {
+event AssetStateChanged {
   --> GHGcarrierAsset gHGcarrierAsset
   o Double transferGHG
 }
 
-event AssetSold {
+event AssetSentToPipeline {
   --> GHGcarrierAsset gHGcarrierAsset
   o Double sellingGHG
 }
