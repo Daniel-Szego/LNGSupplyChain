@@ -62,6 +62,7 @@ abstract participant GHGProductionState identified by stateId {
   o String stateName
   o Address address optional
   o Double GHG 
+  --> GHGProductionState[] stateFrom
 }
 
 // any kind of a state

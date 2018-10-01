@@ -26,7 +26,8 @@ async function InitTestDataFunction(param) {
 	newAddress.street = "Xia Mo Street";
     newAddress.hauseNr = 16;
   	gasField.address = newAddress;
-  
+    gasField.stateFrom = new Array();
+    
     await gasFieldReg.add(gasField);       
 
   	// adding Liquefaction state
@@ -42,6 +43,8 @@ async function InitTestDataFunction(param) {
 	newAddress2.street = "Mua Mo Street";
     newAddress2.hauseNr = 22;
   	liquefaction.address = newAddress2;
+  	liquefaction.stateFrom = new Array();
+  	liquefaction.stateFrom.push(gasField);
   
     await liquefactionReg.add(liquefaction);       
 
@@ -58,6 +61,8 @@ async function InitTestDataFunction(param) {
 	newAddress3.street = "Mua Mo Street";
     newAddress3.hauseNr = 22;
   	storage.address = newAddress3;
+    storage.stateFrom = new Array();
+    storage.stateFrom.push(liquefaction);
   
     await storageReg.add(storage);       
 
@@ -73,7 +78,9 @@ async function InitTestDataFunction(param) {
 	newAddress4.city = "Hong Kong";
 	newAddress4.street = "Mua Mo Street";
     newAddress4.hauseNr = 22;
-  	storage.address = newAddress4;
+  	loading.address = newAddress4;
+    loading.stateFrom = new Array();
+    loading.stateFrom.push(storage);
   
     await loadingReg.add(loading);       
 
@@ -90,7 +97,9 @@ async function InitTestDataFunction(param) {
 	newAddress5.street = "Mua Mo Street";
     newAddress5.hauseNr = 22;
   	balasted.address = newAddress5;
-  
+    balasted.stateFrom = new Array();
+    balasted.stateFrom.push(loading);
+      
     await balastedReg.add(balasted);       
 
     // adding Transport Loaded state
@@ -106,6 +115,8 @@ async function InitTestDataFunction(param) {
 	newAddress6.street = "Mua Mo Street";
     newAddress6.hauseNr = 22;
   	loaded.address = newAddress6;
+    loaded.stateFrom = new Array();
+    loaded.stateFrom.push(balasted);
   
     await loadedReg.add(loaded);       
 
@@ -121,7 +132,9 @@ async function InitTestDataFunction(param) {
 	newAddress7.city = "Hong Kong";
 	newAddress7.street = "Mua Mo Street";
     newAddress7.hauseNr = 22;
-  	loaded.address = newAddress7;
+  	unloading.address = newAddress7;
+    unloading.stateFrom = new Array();
+    unloading.stateFrom.push(loaded);
   
     await unloadingReg.add(unloading);       
   
@@ -139,6 +152,8 @@ async function InitTestDataFunction(param) {
 	newAddress8.street = "Mua Mo Street";
     newAddress8.hauseNr = 22;
   	storage2.address = newAddress8;
+   	storage2.stateFrom = new Array();
+    storage2.stateFrom.push(unloading);
   
     await storage2Reg.add(storage2);       
 
@@ -155,6 +170,8 @@ async function InitTestDataFunction(param) {
 	newAddress9.street = "Mua Mo Street";
     newAddress9.hauseNr = 22;
   	regasifiction.address = newAddress9;
+    regasifiction.stateFrom = new Array();
+    regasifiction.stateFrom.push(storage2);
   
     await regasifictionReg.add(regasifiction);       
 
@@ -171,7 +188,9 @@ async function InitTestDataFunction(param) {
 	newAddress10.street = "Mua Mo Street";
     newAddress10.hauseNr = 22;
   	lNGToPipeline.address = newAddress10;
-  
+    lNGToPipeline.stateFrom = new Array();
+    lNGToPipeline.stateFrom.push(regasifiction);
+      
     await lNGToPipelineReg.add(lNGToPipeline);        
 }
 
