@@ -11,124 +11,168 @@ const namespace = "org.supplychain.LNG.model";
  */
 async function InitTestDataFunction(param) {  
     console.log('init test data');
-
-    console.log('Creating a manufacturer company');  
+	
+    console.log('Creating a Gas Field State');  
     const factory = getFactory(); 
 	
-  	// adding manufacturer company 
-    const manCompReg = await getParticipantRegistry(namespace + '.ManufacturerCompany');   
-    const manComp = await factory.newResource(namespace, 'ManufacturerCompany', "1");
-    manComp.companyName = "Cell phone Manufacturer Inc.";
-    manComp.GHG = 100;
-    const newAddress = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress.country = "Bejing";
-	newAddress.city = "China";
+  	// adding a gas field state
+    const gasFieldReg = await getParticipantRegistry(namespace + '.GasFieldState');   
+    const gasField = await factory.newResource(namespace, 'GasFieldState', "1");
+    gasField.stateName = "gas Field";
+    gasField.GHG = 100;
+    const newAddress = await factory.newConcept(namespace, 'Address');
+	newAddress.country = "China";
+	newAddress.city = "Bejing";
 	newAddress.street = "Xia Mo Street";
     newAddress.hauseNr = 16;
-  	manComp.companyAddress = newAddress;
+  	gasField.address = newAddress;
   
-    await manCompReg.add(manComp);       
+    await gasFieldReg.add(gasField);       
 
-  	// adding transportation company 1
-    console.log('Creating a transportation company 1');  
+  	// adding Liquefaction state
+    console.log('Creating Liquefaction State');  
 
-    const transCompReg = await getParticipantRegistry(namespace + '.TransportationCompany');   
-    const transComp1 = await factory.newResource(namespace, 'TransportationCompany', "2");
-    transComp1.companyName = "Truck Transport Inc.";
-    transComp1.GHG = 50;
-    const newAddress2 = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress2.country = "Hong Kong";
-	newAddress2.city = "China";
+    const liquefactionReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const liquefaction = await factory.newResource(namespace, 'ProductionState', "2");
+    liquefaction.stateName = "liquefaction";
+    liquefaction.GHG = 50;
+    const newAddress2 = await factory.newConcept(namespace, 'Address');
+	newAddress2.country = "China";
+	newAddress2.city = "Hong Kong";
 	newAddress2.street = "Mua Mo Street";
     newAddress2.hauseNr = 22;
-  	transComp1.companyAddress = newAddress2;
-    transComp1.transportFrom = new Array();
-    transComp1.transportFrom.push(manComp);
+  	liquefaction.address = newAddress2;
   
-    await transCompReg.add(transComp1);       
-  
-    // adding relay company 1
-    console.log('Creating a relay company 1');  
+    await liquefactionReg.add(liquefaction);       
 
-    const relayCompReg = await getParticipantRegistry(namespace + '.RelayCompany');   
-    const relayComp1 = await factory.newResource(namespace, 'RelayCompany', "5");
-    relayComp1.companyName = "Harbour";
-    relayComp1.GHG = 120;
-    const newAddress5 = await factory.newConcept(namespace, 'CompanyAddress');
+    // adding Storage state
+    console.log('Creating Storage State');  
+
+    const storageReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const storage = await factory.newResource(namespace, 'ProductionState', "3");
+    storage.stateName = "Storage";
+    storage.GHG = 50;
+    const newAddress3 = await factory.newConcept(namespace, 'Address');
+	newAddress3.country = "China";
+	newAddress3.city = "Hong Kong";
+	newAddress3.street = "Mua Mo Street";
+    newAddress3.hauseNr = 22;
+  	storage.address = newAddress3;
+  
+    await storageReg.add(storage);       
+
+    // adding Loading state
+    console.log('Creating Loading State');  
+
+    const loadingReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const loading = await factory.newResource(namespace, 'ProductionState', "4");
+    loading.stateName = "Loading";
+    loading.GHG = 50;
+    const newAddress4 = await factory.newConcept(namespace, 'Address');
+	newAddress4.country = "China";
+	newAddress4.city = "Hong Kong";
+	newAddress4.street = "Mua Mo Street";
+    newAddress4.hauseNr = 22;
+  	storage.address = newAddress4;
+  
+    await loadingReg.add(loading);       
+
+    // adding Transport Balasted state
+    console.log('Creating Transport Balasted State');  
+
+    const balastedReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const balasted = await factory.newResource(namespace, 'ProductionState', "5");
+    balasted.stateName = "Balasted";
+    balasted.GHG = 50;
+    const newAddress5 = await factory.newConcept(namespace, 'Address');
 	newAddress5.country = "China";
 	newAddress5.city = "Hong Kong";
-	newAddress5.street = "Seeside";
-    newAddress5.hauseNr = 4;
-  	relayComp1.companyAddress = newAddress5;
-
-    await relayCompReg.add(relayComp1);       
-
+	newAddress5.street = "Mua Mo Street";
+    newAddress5.hauseNr = 22;
+  	balasted.address = newAddress5;
   
-  	// adding transportation company 2
-    console.log('Creating a transportation company 2');  
+    await balastedReg.add(balasted);       
 
-    const transComp2 = await factory.newResource(namespace, 'TransportationCompany', "3");
-    transComp2.companyName = "Shipping Inc.";
-    transComp2.GHG = 150;
-    const newAddress3 = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress3.country = "Sydney";
-	newAddress3.city = "Australia";
-	newAddress3.street = "Beecon Str";
-    newAddress3.hauseNr = 122;
-  	transComp2.companyAddress = newAddress3;
-    transComp2.transportFrom = new Array();
-    transComp2.transportFrom.push(relayComp1);  
+    // adding Transport Loaded state
+    console.log('Creating Transport Loaded State');  
+
+    const loadedReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const loaded = await factory.newResource(namespace, 'ProductionState', "6");
+    loaded.stateName = "Loaded";
+    loaded.GHG = 50;
+    const newAddress6 = await factory.newConcept(namespace, 'Address');
+	newAddress6.country = "China";
+	newAddress6.city = "Hong Kong";
+	newAddress6.street = "Mua Mo Street";
+    newAddress6.hauseNr = 22;
+  	loaded.address = newAddress6;
   
-    await transCompReg.add(transComp2);       
+    await loadedReg.add(loaded);       
 
-    // adding relay company 2
-    console.log('Creating a relay company 2');  
+    // adding Unloading state
+    console.log('Creating Transport Unloading State');  
 
-    const relayComp2 = await factory.newResource(namespace, 'RelayCompany', "6");
-    relayComp2.companyName = "Harbour";
-    relayComp2.GHG = 120;
-    const newAddress6 = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress6.country = "Italy";
-	newAddress6.city = "Triest";
-	newAddress6.street = "Via Rue";
-    newAddress6.hauseNr = 44;
-  	relayComp2.companyAddress = newAddress6;
-
-    await relayCompReg.add(relayComp2);       
-
+    const unloadingReg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const unloading = await factory.newResource(namespace, 'ProductionState', "7");
+    unloading.stateName = "Unloading";
+    unloading.GHG = 50;
+    const newAddress7 = await factory.newConcept(namespace, 'Address');
+	newAddress7.country = "China";
+	newAddress7.city = "Hong Kong";
+	newAddress7.street = "Mua Mo Street";
+    newAddress7.hauseNr = 22;
+  	loaded.address = newAddress7;
   
-    // adding transportation company 3
-    console.log('Creating a transportation company 3');  
-
-    const transComp3 = await factory.newResource(namespace, 'TransportationCompany', "4");
-    transComp3.companyName = "Fast Train Transport";
-    transComp3.GHG = 80;
-    const newAddress4 = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress4.country = "Italy";
-	newAddress4.city = "Venice";
-	newAddress4.street = "Via Margutta";
-    newAddress4.hauseNr = 8;
-  	transComp3.companyAddress = newAddress4;
-    transComp3.transportFrom = new Array();
-    transComp3.transportFrom.push(relayComp2);
-
-    await transCompReg.add(transComp3);       
- 
-  	// adding sales company 
-    console.log('Creating a Sales company 1');  
-
-    const salesCompReg = await getParticipantRegistry(namespace + '.SalesCompany');   
-    const salesComp = await factory.newResource(namespace, 'SalesCompany', "5");
-    salesComp.companyName = "Sales Co.";
-    salesComp.GHG = 30;
-    const newAddress7 = await factory.newConcept(namespace, 'CompanyAddress');
-	newAddress7.country = "Hungary";
-	newAddress7.city = "Budapest";
-	newAddress7.street = "Bartok Bela ut";
-    newAddress7.hauseNr = 44;
-  	salesComp.companyAddress = newAddress7;
+    await unloadingReg.add(unloading);       
   
-    await salesCompReg.add(salesComp);         
+  
+    // adding Storage 2 state
+    console.log('Creating Storage 2 State');  
+
+    const storage2Reg = await getParticipantRegistry(namespace + '.ProductionState');   
+    const storage2 = await factory.newResource(namespace, 'ProductionState', "8");
+    storage2.stateName = "Storage 2";
+    storage2.GHG = 50;
+    const newAddress8 = await factory.newConcept(namespace, 'Address');
+	newAddress8.country = "China";
+	newAddress8.city = "Hong Kong";
+	newAddress8.street = "Mua Mo Street";
+    newAddress8.hauseNr = 22;
+  	storage2.address = newAddress8;
+  
+    await storage2Reg.add(storage2);       
+
+    // adding Regasifiction state
+    console.log('Creating Regasifiction State');  
+
+    const regasifictionReg = await getParticipantRegistry(namespace + '.ProductionState'); 
+    const regasifiction = await factory.newResource(namespace, 'ProductionState', "9");
+    regasifiction.stateName = "Storage";
+    regasifiction.GHG = 50;
+    const newAddress9 = await factory.newConcept(namespace, 'Address');
+	newAddress9.country = "China";
+	newAddress9.city = "Hong Kong";
+	newAddress9.street = "Mua Mo Street";
+    newAddress9.hauseNr = 22;
+  	regasifiction.address = newAddress9;
+  
+    await regasifictionReg.add(regasifiction);       
+
+    // adding LNGToPipeline state
+    console.log('Creating lNGToPipeline State');  
+
+    const lNGToPipelineReg = await getParticipantRegistry(namespace + '.LNGToPipelineState'); 
+    const lNGToPipeline = await factory.newResource(namespace, 'LNGToPipelineState', "10");
+    lNGToPipeline.stateName = "Storage";
+    lNGToPipeline.GHG = 50;
+    const newAddress10 = await factory.newConcept(namespace, 'Address');
+	newAddress10.country = "China";
+	newAddress10.city = "Hong Kong";
+	newAddress10.street = "Mua Mo Street";
+    newAddress10.hauseNr = 22;
+  	lNGToPipeline.address = newAddress10;
+  
+    await lNGToPipelineReg.add(lNGToPipeline);        
 }
 
 /**
