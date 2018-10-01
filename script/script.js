@@ -211,37 +211,22 @@ async function ClearDataFunction(param) {
  */
 async function ChangeStateFunction(param) {  
 	let assetToTransfer = param.assetToTransfer;
-    let fromCompany = param.fromCompany;
-    let toCompany = param.toCompany;
-  
-  	// checking if transfer is valid
-    
-    if(toCompany.transportFrom) {
-      	let isValidTransfer = false;
-	    await toCompany.transportFrom.forEach(function (company) {
-			if(company == fromCompany)
-            {
-              	isValidTransfer = true;
-            }
-        });
-  		if(isValidTransfer == false) {
-        	throw new Error('Invalid transfer');
-        }  
-    }
-    	
-  	assetToTransfer.atCompany = toCompany;
-    assetToTransfer.aggregatedGHG = assetToTransfer.aggregatedGHG + toCompany.GHG;     	  assetToTransfer.assetStatus = "ON_THE_ROAD";
+    let fromState = param.fromState;
+    let toState = param.toState;
+      	
+  	assetToTransfer.atState = toState;
+    assetToTransfer.aggregatedGHG = assetToTransfer.aggregatedGHG + toState.GHG;     	       assetToTransfer.assetStatus = "IN_PROCESS";
   	
-    const cellPhoneReg = await getAssetRegistry(namespace + '.CellPhone'); 
-    await cellPhoneReg.update(assetToTransfer);    
+    const lNGReg = await getAssetRegistry(namespace + '.LNG'); 
+    await lNGReg.update(assetToTransfer);    
   
-  	// emitting Transfer event
+  	// emitting AssetStateChanged  event
     let factory = await getFactory();
 
-    let transferEvent = factory.newEvent('org.supplychain.green.model', 'AssetTransferred');
-  	transferEvent.gHGcarrierAsset = assetToTransfer;
-  	transferEvent.transferGHG = assetToTransfer.aggregatedGHG;
-    await emit(transferEvent);  	
+    let stateChangedEvent = factory.newEvent(namespace, 'AssetStateChanged');
+  	stateChangedEvent.gHGcarrierAsset = assetToTransfer;
+  	stateChangedEvent.transferGHG = assetToTransfer.aggregatedGHG;
+    await emit(stateChangedEvent);  	
 }
 
 /**
@@ -250,34 +235,33 @@ async function ChangeStateFunction(param) {
  * @transaction
  */
 async function CreateFunction(param) {  
-	let manCompany = param.manufacturerCompany;
+	let gasFieldState = param.gasFieldState;
     let factory = await getFactory();
   
     // creating cell phone
-    const cellPhoneReg = await getAssetRegistry(namespace + '.CellPhone');   
+    const lNGReg = await getAssetRegistry(namespace + '.LNG');   
 
     // getting next id
-    let existingPhones = await cellPhoneReg.getAll();
-  	let numberOfPhones = 0;
+    let existingLNGs = await lNGReg.getAll();
+  	let numberOfLNGs = 0;
   
-    await existingPhones.forEach(function (phone) {
-      numberOfPhones ++;
+    await existingLNGs.forEach(function (lng) {
+      numberOfLNGs ++;
     });
- 	numberOfPhones ++; 	
+ 	numberOfLNGs ++; 	
 
-    const newCellPhone = await factory.newResource(namespace, 'CellPhone', numberOfPhones.toString());
-    newCellPhone.assetStatus = "CREATED";
-    newCellPhone.aggregatedGHG = manCompany.GHG;
-    newCellPhone.atCompany = manCompany;
-    newCellPhone.cellPhoneType = "LENOVO";
-    newCellPhone.amount = 1;
-    await cellPhoneReg.add(newCellPhone);       
+    const lNG = await factory.newResource(namespace, 'LNG', numberOfLNGs.toString());
+    lNG.assetStatus = "CREATED";
+    lNG.aggregatedGHG = gasFieldState.GHG;
+    lNG.atState = gasFieldState;
+    lNG.amount = 1;
+    await lNGReg.add(lNG);       
   
-  	// emitting create event
+  	// emitting AssetCreated  event
 
-    let createEvent = factory.newEvent('org.supplychain.green.model', 'AssetCreated');
-  	createEvent.gHGcarrierAsset = newCellPhone;
-  	createEvent.creationGHG = newCellPhone.aggregatedGHG;
+    let createEvent = factory.newEvent(namespace, 'AssetCreated');
+  	createEvent.gHGcarrierAsset = lNG;
+  	createEvent.creationGHG = lNG.aggregatedGHG;
     await emit(createEvent);  	
 }
 
@@ -287,18 +271,18 @@ async function CreateFunction(param) {
  * @transaction
  */
 async function ToPipielineFunction(param) {  
-	let assetToTransfer = param.assetToSell;
+	let assetToPipeline = param.assetToPipeline;
     let factory = await getFactory();
  	
-  	assetToTransfer.assetStatus = "SOLD";
+  	assetToPipeline.assetStatus = "READY";
   	
-    const cellPhoneReg = await getAssetRegistry(namespace + '.CellPhone'); 
-    await cellPhoneReg.update(assetToTransfer);    
+    const lNGReg = await getAssetRegistry(namespace + '.LNG'); 
+    await lNGReg.update(assetToPipeline);    
   
-  	// emitting Sold event
+  	// emitting ToPipieline 
 
-    let soldEvent = factory.newEvent('org.supplychain.green.model', 'AssetSold');
-  	soldEvent.gHGcarrierAsset = assetToTransfer;
-  	soldEvent.sellingGHG = assetToTransfer.aggregatedGHG;
-    await emit(soldEvent);  	
+    let ToPipielineEvent  = factory.newEvent(namespace, 'AssetSentToPipeline');
+  	ToPipielineEvent.gHGcarrierAsset = assetToPipeline;
+  	ToPipielineEvent.sellingGHG = assetToPipeline.aggregatedGHG;
+    await emit(ToPipielineEvent);  	
 }
