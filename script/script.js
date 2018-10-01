@@ -232,6 +232,20 @@ async function ChangeStateFunction(param) {
 	let assetToTransfer = param.assetToTransfer;
     let fromState = param.fromState;
     let toState = param.toState;
+  
+    // checking if transfer is valid 
+    if(toState.stateFrom) {
+      	let isValidTransfer = false;
+	    await toState.stateFrom.forEach(function (state) {
+			if(state == fromState)
+            {
+              	isValidTransfer = true;
+            }
+        });
+  		if(isValidTransfer == false) {
+        	throw new Error('Invalid transfer');
+        }  
+    }
       	
   	assetToTransfer.atState = toState;
     assetToTransfer.aggregatedGHG = assetToTransfer.aggregatedGHG + toState.GHG;     	       assetToTransfer.assetStatus = "IN_PROCESS";
