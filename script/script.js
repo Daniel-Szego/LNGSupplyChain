@@ -10,6 +10,12 @@ const namespace = "org.supplychain.LNG.model";
  * @transaction
  */
 async function InitTestDataFunction(param) {  
+  
+    console.log('accessing baseline for ghg emission');    
+  
+    const ghgBsaeLineInfo = await request.get( { uri:'https://iaspub.epa.gov/enviro/efservice/tri_facility/state_abbr/VA/rows/102:102/JSON', json: true});
+    const baseline = parseInt(ghgBsaeLineInfo[0].PREF_QA_CODE) / 10;
+
     console.log('init test data');
 	
     console.log('Creating a Gas Field State');  
@@ -19,7 +25,7 @@ async function InitTestDataFunction(param) {
     const gasFieldReg = await getParticipantRegistry(namespace + '.GasFieldState');   
     const gasField = await factory.newResource(namespace, 'GasFieldState', "1");
     gasField.stateName = "gas Field";
-    gasField.GHG = 100;
+    gasField.GHG = baseline;
     const newAddress = await factory.newConcept(namespace, 'Address');
 	newAddress.country = "China";
 	newAddress.city = "Bejing";
@@ -36,7 +42,7 @@ async function InitTestDataFunction(param) {
     const liquefactionReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const liquefaction = await factory.newResource(namespace, 'ProductionState', "2");
     liquefaction.stateName = "liquefaction";
-    liquefaction.GHG = 50;
+    liquefaction.GHG = baseline / 2;
     const newAddress2 = await factory.newConcept(namespace, 'Address');
 	newAddress2.country = "China";
 	newAddress2.city = "Hong Kong";
@@ -54,7 +60,7 @@ async function InitTestDataFunction(param) {
     const storageReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const storage = await factory.newResource(namespace, 'ProductionState', "3");
     storage.stateName = "Storage";
-    storage.GHG = 50;
+    storage.GHG = baseline / 2;
     const newAddress3 = await factory.newConcept(namespace, 'Address');
 	newAddress3.country = "China";
 	newAddress3.city = "Hong Kong";
@@ -72,7 +78,7 @@ async function InitTestDataFunction(param) {
     const loadingReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const loading = await factory.newResource(namespace, 'ProductionState', "4");
     loading.stateName = "Loading";
-    loading.GHG = 50;
+    loading.GHG = baseline / 2;
     const newAddress4 = await factory.newConcept(namespace, 'Address');
 	newAddress4.country = "China";
 	newAddress4.city = "Hong Kong";
@@ -90,7 +96,7 @@ async function InitTestDataFunction(param) {
     const balastedReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const balasted = await factory.newResource(namespace, 'ProductionState', "5");
     balasted.stateName = "Balasted";
-    balasted.GHG = 50;
+    balasted.GHG = baseline / 1.75;
     const newAddress5 = await factory.newConcept(namespace, 'Address');
 	newAddress5.country = "China";
 	newAddress5.city = "Hong Kong";
@@ -108,7 +114,7 @@ async function InitTestDataFunction(param) {
     const loadedReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const loaded = await factory.newResource(namespace, 'ProductionState', "6");
     loaded.stateName = "Loaded";
-    loaded.GHG = 50;
+    loaded.GHG = baseline / 2;
     const newAddress6 = await factory.newConcept(namespace, 'Address');
 	newAddress6.country = "China";
 	newAddress6.city = "Hong Kong";
@@ -126,7 +132,7 @@ async function InitTestDataFunction(param) {
     const unloadingReg = await getParticipantRegistry(namespace + '.ProductionState');   
     const unloading = await factory.newResource(namespace, 'ProductionState', "7");
     unloading.stateName = "Unloading";
-    unloading.GHG = 50;
+    unloading.GHG = baseline / 1.5;
     const newAddress7 = await factory.newConcept(namespace, 'Address');
 	newAddress7.country = "China";
 	newAddress7.city = "Hong Kong";
@@ -145,7 +151,7 @@ async function InitTestDataFunction(param) {
     const storage2Reg = await getParticipantRegistry(namespace + '.ProductionState');   
     const storage2 = await factory.newResource(namespace, 'ProductionState', "8");
     storage2.stateName = "Storage 2";
-    storage2.GHG = 50;
+    storage2.GHG = baseline / 2;
     const newAddress8 = await factory.newConcept(namespace, 'Address');
 	newAddress8.country = "China";
 	newAddress8.city = "Hong Kong";
@@ -163,7 +169,7 @@ async function InitTestDataFunction(param) {
     const regasifictionReg = await getParticipantRegistry(namespace + '.ProductionState'); 
     const regasifiction = await factory.newResource(namespace, 'ProductionState', "9");
     regasifiction.stateName = "Storage";
-    regasifiction.GHG = 50;
+    regasifiction.GHG = baseline / 2;
     const newAddress9 = await factory.newConcept(namespace, 'Address');
 	newAddress9.country = "China";
 	newAddress9.city = "Hong Kong";
@@ -181,7 +187,7 @@ async function InitTestDataFunction(param) {
     const lNGToPipelineReg = await getParticipantRegistry(namespace + '.LNGToPipelineState'); 
     const lNGToPipeline = await factory.newResource(namespace, 'LNGToPipelineState', "10");
     lNGToPipeline.stateName = "Storage";
-    lNGToPipeline.GHG = 50;
+    lNGToPipeline.GHG = baseline / 1.5;
     const newAddress10 = await factory.newConcept(namespace, 'Address');
 	newAddress10.country = "China";
 	newAddress10.city = "Hong Kong";
