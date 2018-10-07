@@ -15,12 +15,13 @@
 /**
  * Initial access control list for the LNG supply chain.
  */
-rule EverybodyCanDOEverything {
-    description: "Allow all participants can do everything"
-    participant: "**"
-    operation: ALL
-    resource: "**"
-    action: ALLOW
+
+rule GasFieldStateCanNotManageParticipants {
+    description: "Members of the GasFieldState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.GasFieldState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
+    action: DENY
 }
 
 rule GasFieldStateCanOnlyCreate {
@@ -28,6 +29,14 @@ rule GasFieldStateCanOnlyCreate {
     participant: "org.supplychain.LNG.model.GasFieldState"
     operation: UPDATE, DELETE
     resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule ProductionStateCanNotManageParticipants {
+    description: "Members of the ProductionState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.ProductionState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
     action: DENY
 }
 
@@ -39,6 +48,14 @@ rule ProductionStateCanOnlyUpdate {
     action: DENY
 }
 
+rule LNGToPipelineStateCanNotManageParticipants {
+    description: "Members of the LNGToPipelineState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.LNGToPipelineState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
+    action: DENY
+}
+
 rule LNGToPipelineStateCanNotCreate {
     description: "Members of the LNGToPipelineState role can not create an asset"
     participant: "org.supplychain.LNG.model.LNGToPipelineState"
@@ -46,3 +63,13 @@ rule LNGToPipelineStateCanNotCreate {
     resource: "org.supplychain.LNG.model.GHGcarrierAsset"
     action: DENY
 }
+
+rule EverybodyCanDOEverything {
+    description: "Allow all participants can do everything"
+    participant: "**"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+
