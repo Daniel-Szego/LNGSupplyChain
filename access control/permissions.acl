@@ -13,7 +13,7 @@
  */
 
 /**
- * Sample access control list.
+ * Initial access control list for the LNG supply chain.
  */
 rule EverybodyCanDOEverything {
     description: "Allow all participants can do everything"
@@ -23,3 +23,26 @@ rule EverybodyCanDOEverything {
     action: ALLOW
 }
 
+rule GasFieldStateCanOnlyCreate {
+    description: "Members of the GasFieldState roles can only create and read asset"
+    participant: "org.supplychain.LNG.model.GasFieldState"
+    operation: UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule ProductionStateCanOnlyUpdate {
+    description: "Members of the production state role can only update and read an asset"
+    participant: "org.supplychain.LNG.model.ProductionState"
+    operation: UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule LNGToPipelineStateCanNotCreate {
+    description: "Members of the LNGToPipelineState role can not create an asset"
+    participant: "org.supplychain.LNG.model.LNGToPipelineState"
+    operation: CREATE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
